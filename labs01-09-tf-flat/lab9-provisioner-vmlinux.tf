@@ -6,7 +6,7 @@ resource "null_resource" "linux_provisioner" {
   ]
 
   triggers = {
-    network_interface_ids = join(",", azurerm_network_interface.linux_nic.*.id)
+    network_interface_ids = join(",", azurerm_network_interface.linux_nic[*].id)
   }
 
   provisioner "local-exec" {

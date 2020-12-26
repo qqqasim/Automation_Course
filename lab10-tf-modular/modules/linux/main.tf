@@ -19,7 +19,7 @@ resource "azurerm_linux_virtual_machine" "vmlinux" {
   name                  = "${var.linux_name}${format("%1d", count.index + 1)}"
   location              = var.location
   resource_group_name   = var.resource_group
-  network_interface_ids = [element(azurerm_network_interface.linux_nic.*.id, count.index + 1)]
+  network_interface_ids = [element(azurerm_network_interface.linux_nic[*].id, count.index + 1)]
   availability_set_id   = azurerm_availability_set.avset.id
   computer_name         = "${var.linux_name}-${format("%1d", count.index + 1)}"
   size                  = var.vm_size
@@ -58,7 +58,7 @@ resource "azurerm_network_interface" "linux_nic" {
   ip_configuration {
     name                 = "${var.linux_name}-ip-${format("%1d", count.index + 1)}"
     subnet_id            = var.subnet_id
-    public_ip_address_id = element(azurerm_public_ip.linux_pip.*.id, count.index)
+    public_ip_address_id = element(azurerm_public_ip.linux_pip[*].id, count.index)
 
     private_ip_address_allocation = "dynamic"
   }
